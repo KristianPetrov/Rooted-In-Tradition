@@ -24,9 +24,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <div className="starfield" aria-hidden>
+          <div className="layer layer-1" />
+          <div className="layer layer-2" />
+          <div className="layer layer-3" />
+        </div>
+        <header className="navbar">
+          <div className="navbar-inner">
+            <span />
+            <nav className="nav-links" aria-label="Primary">
+              <a className="island-btn" href="#mission">Mission</a>
+              <a className="island-btn" href="#vision">Vision</a>
+              <a className="island-btn" href="#contact">Contact</a>
+            </nav>
+            <label htmlFor="nav-check" className="nav-toggle island-btn" aria-label="Open menu">☰</label>
+          </div>
+          <input id="nav-check" type="checkbox" />
+          <div className="nav-menu">
+            <nav className="flex flex-col gap-2" aria-label="Mobile">
+              <a className="island-btn" href="#mission">Mission</a>
+              <a className="island-btn" href="#vision">Vision</a>
+              <a className="island-btn" href="#contact">Contact</a>
+            </nav>
+          </div>
+        </header>
         {children}
       </body>
     </html>
