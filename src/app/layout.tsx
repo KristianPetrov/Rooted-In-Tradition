@@ -59,6 +59,9 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/apple-icon.png", type: "image/png" }],
     shortcut: ["/favicon.ico"],
+    other: [
+      { rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#4a3b2a" },
+    ],
   },
 };
 
