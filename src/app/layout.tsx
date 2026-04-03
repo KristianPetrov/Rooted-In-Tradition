@@ -80,6 +80,7 @@ export default function RootLayout({
             <nav className="nav-links" aria-label="Primary">
               <a className="island-btn" href="#mission">Mission</a>
               <a className="island-btn" href="#vision">Vision</a>
+              <a className="island-btn" href="#units">Units</a>
               <a className="island-btn" href="#contact">Contact</a>
             </nav>
             <label htmlFor="nav-check" className="nav-toggle island-btn" aria-label="Open menu">☰</label>
@@ -89,6 +90,7 @@ export default function RootLayout({
             <nav className="flex flex-col gap-2" aria-label="Mobile">
               <a className="island-btn" href="#mission">Mission</a>
               <a className="island-btn" href="#vision">Vision</a>
+              <a className="island-btn" href="#units">Units</a>
               <a className="island-btn" href="#contact">Contact</a>
             </nav>
           </div>

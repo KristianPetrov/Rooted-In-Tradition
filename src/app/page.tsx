@@ -1,4 +1,23 @@
 import Image from "next/image";
+import { UnitSlideshow } from "@/components/UnitSlideshow";
+
+const unitCPhotos = [
+  { src: "/kitchen-unit.png", caption: "Kitchen", width: 1536, height: 2048 },
+  { src: "/kitchen-unit-c.png", caption: "Kitchen (alternate view)", width: 1536, height: 2048 },
+  { src: "/beds-unit-c.png", caption: "Sleeping area", width: 4030, height: 2333 },
+  { src: "/dining-room-unit-c.png", caption: "Dining room", width: 1536, height: 2048 },
+  { src: "/living-room-dining-unit-c.png", caption: "Living & dining", width: 2048, height: 1536 },
+  { src: "/living-room-unit-c.png", caption: "Living room", width: 2048, height: 1536 },
+] as const;
+
+const unitDPhotos = [
+  { src: "/kitchen-unit-d.png", caption: "Kitchen", width: 1536, height: 2048 },
+  { src: "/bathroom-sink-unit-d.png", caption: "Bathroom", width: 1536, height: 2048 },
+  { src: "/bedroom-2-bed-unit-d.png", caption: "Bedroom (two beds)", width: 1920, height: 1440 },
+  { src: "/bedroom-unit-d.png", caption: "Bedroom", width: 1536, height: 2048 },
+  { src: "/living-room-couch-unit-d.png", caption: "Living room", width: 2048, height: 1536 },
+  { src: "/living-room-tv-stairs-unit-d.png", caption: "Living room & stairs", width: 2048, height: 1536 },
+] as const;
 
 export default function Home() {
   return (
@@ -7,7 +26,7 @@ export default function Home() {
       <section>
         <Image
           className="hero-image mx-auto"
-          src="/rooted-in-tradition.png"
+          src="/rooted-in-tradition-transparent-logo.png"
           alt="Rooted In Tradition"
           width={1200}
           height={700}
@@ -40,6 +59,22 @@ export default function Home() {
               Our vision is holistic: mind, body, and spirit. We believe healing happens when counseling meets prayer, when community meets culture, and when people are given not just shelter, but belonging. Rooted In Tradition is more than a program — it is a movement toward revival, reconciliation, and freedom for generations to come.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* Residence gallery */}
+      <section id="units" className="mt-10 sm:mt-14 md:mt-20">
+        <div className="island p-6 sm:p-10 md:p-14">
+          <h2 className="earth-heading text-2xl sm:text-3xl md:text-4xl font-semibold">Our homes</h2>
+          <p className="earth-prose mt-4 text-base sm:text-lg leading-relaxed">
+            A look inside our structured sober living spaces — warm, dignified environments where residents can heal and grow.
+          </p>
+
+          <h3 className="earth-heading mt-10 text-xl sm:text-2xl font-semibold">Unit C</h3>
+          <UnitSlideshow photos={unitCPhotos} unitLabel="Unit C" priorityFirstSlide />
+
+          <h3 className="earth-heading mt-12 text-xl sm:text-2xl font-semibold">Unit D</h3>
+          <UnitSlideshow photos={unitDPhotos} unitLabel="Unit D" />
         </div>
       </section>
 
