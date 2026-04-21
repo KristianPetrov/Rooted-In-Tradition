@@ -89,7 +89,7 @@ export default function Home() {
             </div>
             <div>
               <p className="text-sm uppercase tracking-wide text-[color:var(--earth-sand)]/80">Email</p>
-              <a className="island-btn mt-2 inline-flex" href="mailto:nohealanic@magichousesetfree.com">nohealanic@magichousesetfree.com</a>
+              <a className="island-btn mt-2 inline-flex" href="mailto:nohealanicasperson3@gmail.com">Nohealanicasperson3@gmail.com</a>
             </div>
           </div>
         </div>

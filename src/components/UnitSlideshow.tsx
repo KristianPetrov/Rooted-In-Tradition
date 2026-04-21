@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+
+const AUTO_ADVANCE_MS = 5000;
 
 export type UnitPhoto = {
   src: string;
@@ -19,14 +21,43 @@ type UnitSlideshowProps = {
 
 export function UnitSlideshow({ photos, unitLabel, priorityFirstSlide }: UnitSlideshowProps) {
   const [index, setIndex] = useState(0);
+  const [hoverPaused, setHoverPaused] = useState(false);
+  const [instantTransition, setInstantTransition] = useState(false);
+  const indexRef = useRef(0);
   const count = photos.length;
   const current = photos[index];
 
+  indexRef.current = index;
+
+  const moveTo = useCallback((next: number) => {
+    const prev = indexRef.current;
+    if (prev === count - 1 && next === 0) setInstantTransition(true);
+    setIndex(next);
+  }, [count]);
+
+  useLayoutEffect(() => {
+    if (instantTransition) setInstantTransition(false);
+  }, [index, instantTransition]);
+
+  useEffect(() => {
+    if (count <= 1 || hoverPaused) return;
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const id = window.setInterval(() => {
+      if (document.visibilityState !== "visible") return;
+      moveTo((indexRef.current + 1) % count);
+    }, AUTO_ADVANCE_MS);
+
+    return () => window.clearInterval(id);
+  }, [count, hoverPaused, moveTo]);
+
   const go = useCallback(
     (delta: number) => {
-      setIndex((i) => (i + delta + count) % count);
+      const prev = indexRef.current;
+      moveTo((prev + delta + count) % count);
     },
-    [count]
+    [count, moveTo]
   );
 
   const label = `${unitLabel} photo tour`;
@@ -38,6 +69,8 @@ export function UnitSlideshow({ photos, unitLabel, priorityFirstSlide }: UnitSli
       aria-roledescription="carousel"
       aria-label={label}
       tabIndex={0}
+      onMouseEnter={() => setHoverPaused(true)}
+      onMouseLeave={() => setHoverPaused(false)}
       onKeyDown={(e) => {
         if (e.key === "ArrowLeft") {
           e.preventDefault();
@@ -50,17 +83,32 @@ export function UnitSlideshow({ photos, unitLabel, priorityFirstSlide }: UnitSli
       }}
     >
       <figure className="m-0">
-        <div className="unit-slideshow-frame flex min-h-[220px] items-center justify-center rounded-2xl bg-black/25 p-2 sm:min-h-[280px] md:min-h-[340px]">
-          <div key={current.src} className="unit-slideshow-slide flex max-h-[min(70vh,560px)] w-full items-center justify-center">
-            <Image
-              className="unit-gallery-image max-h-[min(70vh,560px)] w-auto max-w-full object-contain"
-              src={current.src}
-              alt={`${current.caption} — ${unitLabel}`}
-              width={current.width}
-              height={current.height}
-              sizes="(max-width: 768px) 100vw, min(896px, 90vw)"
-              priority={Boolean(priorityFirstSlide && index === 0)}
-            />
+        <div className="unit-slideshow-frame rounded-2xl bg-black/25 p-2">
+          <div className="relative h-[min(70vh,560px)] min-h-[220px] w-full overflow-hidden rounded-2xl">
+            <div
+              className={`unit-slideshow-track flex h-full${instantTransition ? " unit-slideshow-track--instant" : ""}`}
+              style={{
+                width: `${count * 100}%`,
+                transform: `translateX(-${(index * 100) / count}%)`,
+              }}
+            >
+              {photos.map((photo, i) => (
+                <div
+                  key={photo.src}
+                  className="relative h-full shrink-0"
+                  style={{ width: `${100 / count}%` }}
+                >
+                  <Image
+                    fill
+                    className="unit-gallery-image object-contain"
+                    src={photo.src}
+                    alt={`${photo.caption} — ${unitLabel}`}
+                    sizes="(max-width: 768px) 100vw, min(896px, 90vw)"
+                    priority={Boolean(priorityFirstSlide && i === 0)}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <figcaption className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -93,7 +141,7 @@ export function UnitSlideshow({ photos, unitLabel, priorityFirstSlide }: UnitSli
                   ? "h-2.5 w-2.5 rounded-full bg-[color:var(--earth-sand)] shadow-[0_0_12px_rgba(203,180,138,0.35)]"
                   : "h-2.5 w-2.5 rounded-full bg-[color:var(--earth-sand)]/35 transition hover:bg-[color:var(--earth-sand)]/55"
               }
-              onClick={() => setIndex(i)}
+              onClick={() => moveTo(i)}
             />
           ))}
         </div>

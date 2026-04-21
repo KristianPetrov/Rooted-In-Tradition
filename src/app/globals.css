@@ -184,26 +184,26 @@ body {
 
 .unit-gallery-image {
   display: block;
-  max-width: 100%;
-  height: auto;
   border-radius: 16px;
   border: 1px solid rgba(203, 180, 138, 0.18);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .unit-slideshow-slide {
-    animation: unit-slideshow-fade 0.4s ease-out;
+  .unit-slideshow-track {
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 
-@keyframes unit-slideshow-fade {
-  from {
-    opacity: 0;
+@media (prefers-reduced-motion: reduce) {
+  .unit-slideshow-track {
+    transition: none;
   }
-  to {
-    opacity: 1;
-  }
+}
+
+/* Last → first: snap without animating translate the long way */
+.unit-slideshow-track--instant {
+  transition: none !important;
 }
 
 /* ===== Island buttons (rocky) ===== */
