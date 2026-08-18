@@ -4,6 +4,7 @@ import { getOrderById } from "@/lib/db";
 import { getStripe, STRIPE_CONSULTING } from "@/lib/stripe";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 function toCents(amount: number): number {
   return Math.max(0, Math.round(amount * 100));
