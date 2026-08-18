@@ -69,7 +69,6 @@ export default function Home() {
           <p className="earth-prose mt-4 text-base sm:text-lg leading-relaxed">
             A look inside our structured sober living spaces — warm, dignified environments where residents can heal and grow.
           </p>
-
           <h3 className="earth-heading mt-10 text-xl sm:text-2xl font-semibold">Unit C</h3>
           <UnitSlideshow photos={unitCPhotos} unitLabel="Unit C" priorityFirstSlide />
 
